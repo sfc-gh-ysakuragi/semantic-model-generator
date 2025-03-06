@@ -6,13 +6,13 @@ USE DATABASE CORTEX_ANALYST_SEMANTICS;
 -- Create API Integration for Git
 CREATE OR REPLACE API INTEGRATION git_api_integration_snowflake_labs
   API_PROVIDER = git_https_api
-  API_ALLOWED_PREFIXES = ('https://github.com/Snowflake-Labs')
+  API_ALLOWED_PREFIXES = ('https://github.com/sfc-gh-ysakuragi')
   ENABLED = TRUE;
 
 -- Create Git Repository
 CREATE OR REPLACE GIT REPOSITORY git_snowflake_semantic_model_generator
   API_INTEGRATION = git_api_integration_snowflake_labs
-  ORIGIN = 'https://github.com/Snowflake-Labs/semantic-model-generator.git';
+  ORIGIN = 'https://github.com/sfc-gh-ysakuragi/semantic-model-generator.git';
 
 ALTER GIT REPOSITORY git_snowflake_semantic_model_generator FETCH;
 
