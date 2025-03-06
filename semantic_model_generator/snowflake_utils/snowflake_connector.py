@@ -16,7 +16,7 @@ from semantic_model_generator.snowflake_utils.utils import snowflake_connection
 ConnectionType = TypeVar("ConnectionType")
 # Append this to the end of the auto-generated comments to indicate that the comment was auto-generated.
 AUTOGEN_TOKEN = "__"
-_autogen_model = "llama3-8b"
+_autogen_model = "mistral-large2"
 
 # This is the raw column name from snowflake information schema or desc table
 _COMMENT_COL = "COMMENT"
