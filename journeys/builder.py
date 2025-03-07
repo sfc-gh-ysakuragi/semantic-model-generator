@@ -90,40 +90,40 @@ def table_selector_dialog() -> None:
         available_databases = get_available_databases()
 
     st.multiselect(
-        label="Databases",
+        label="データベース",
         options=available_databases,
-        placeholder="Select the databases that contain the tables you'd like to include in your semantic model.",
+        placeholder="セマンティックモデルに含めたいテーブルを含むデータベースを選択",
         on_change=update_schemas_and_tables,
         key="selected_databases",
         # default=st.session_state.get("selected_databases", []),
     )
 
     st.multiselect(
-        label="Schemas",
+        label="スキーマ",
         options=st.session_state.get("available_schemas", []),
-        placeholder="Select the schemas that contain the tables you'd like to include in your semantic model.",
+        placeholder="セマンティックモデルに含めたいテーブルを含むスキーマを選択",
         on_change=update_tables,
         key="selected_schemas",
         format_func=lambda x: format_snowflake_context(x, -1),
     )
 
     st.multiselect(
-        label="Tables",
+        label="テーブル",
         options=st.session_state.get("available_tables", []),
-        placeholder="Select the tables you'd like to include in your semantic model.",
+        placeholder="セマンティックモデルに含めたいテーブルを選択",
         key="selected_tables",
         format_func=lambda x: format_snowflake_context(x, -1),
     )
 
     st.markdown("<div style='margin: 240px;'></div>", unsafe_allow_html=True)
     experimental_features = st.checkbox(
-        "Enable joins (optional)",
-        help="Checking this box will enable you to add/edit join paths in your semantic model. If enabling this setting, please ensure that you have the proper parameters set on your Snowflake account. Reach out to your account team for access.",
+        "結合を有効にする（任意）",
+        help="このボックスにチェックを入れると、セマンティックモデル内の結合パスを追加/編集できるようになります。この設定を有効にする場合は、Snowflakeアカウントに適切なパラメータが設定されていることを確認してください。アクセス方法については、アカウントチームにお問い合わせください。",
     )
 
     st.session_state["experimental_features"] = experimental_features
 
-    submit = st.button("Submit", use_container_width=True, type="primary")
+    submit = st.button("送信", use_container_width=True, type="primary")
     if submit:
         try:
             run_generate_model_str_from_snowflake(
