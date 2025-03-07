@@ -62,14 +62,14 @@ def relationship_builder(
         )
 
         relationship.right_table = st.selectbox(
-            "Right Table",
+            "右テーブル",
             options=[table.name for table in st.session_state.semantic_model.tables],
             index=default_right_table,
             key=f"right_table_{key}",
         )
 
         relationship.join_type = st.radio(  # type: ignore
-            "Join Type",
+            "結合種類",
             options=SUPPORTED_JOIN_TYPES,
             format_func=lambda join_type: semantic_model_pb2.JoinType.Name(join_type),
             index=SUPPORTED_JOIN_TYPES.index(relationship.join_type),
@@ -77,7 +77,7 @@ def relationship_builder(
         )
 
         relationship.relationship_type = st.radio(  # type: ignore
-            "Relationship Type",
+            "リレーション種類",
             options=SUPPORTED_RELATIONSHIP_TYPES,
             format_func=lambda relationship_type: semantic_model_pb2.RelationshipType.Name(
                 relationship_type
@@ -130,13 +130,13 @@ def relationship_builder(
                 default_right_col = 0
 
             join_cols.left_column = st.selectbox(
-                "Left Column",
+                "左カラム",
                 options=[col.name for col in left_columns],
                 index=default_left_col,
                 key=f"left_col_{key}_{col_idx}",
             )
             join_cols.right_column = st.selectbox(
-                "Right Column",
+                "右カラム",
                 options=[col.name for col in right_columns],
                 index=default_right_col,
                 key=f"right_col_{key}_{col_idx}",
@@ -184,7 +184,7 @@ def joins_dialog() -> None:
         relationship_builder(relationship, idx)
 
     # If the user clicks "Add join", add a new join to the relationships list
-    if st.button("Add new join path", use_container_width=True):
+    if st.button("新しい結合パスを追加", use_container_width=True):
         st.session_state.builder_joins.append(
             semantic_model_pb2.Relationship(
                 left_table="",
@@ -197,7 +197,7 @@ def joins_dialog() -> None:
         st.rerun()
 
     # If the user clicks "Save", save the relationships list to the session state
-    if st.button("Save to semantic model", use_container_width=True, type="primary"):
+    if st.button("セマンティックモデルに保存", use_container_width=True, type="primary"):
         # Quickly validate that all of the user's joins have the required fields.
         for relationship in st.session_state.builder_joins:
             if not relationship.left_table or not relationship.right_table:
