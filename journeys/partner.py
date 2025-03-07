@@ -10,9 +10,8 @@ def partner_semantic_setup() -> None:
 
     st.write(
         """
-        Have an existing semantic layer in a partner tool that's integrated with Snowflake?
-        See the below instructions for integrating your partner semantic specs into Cortex Analyst's semantic file.
-        """
+        Snowflakeと統合されているパートナーツールに既存のセマンティックレイヤーをお持ちですか？
+パートナーのセマンティックスペックをCortex Analystのセマンティックファイルに統合するには、以下の手順を参照してください。"""
     )
     configure_partner_semantic()
 
