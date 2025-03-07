@@ -126,7 +126,7 @@ def edit_verified_query(
     st.session_state["error_state"] = None
     st.caption("**CHEAT SHEET**")
     st.markdown(
-        "This section is useful for you to check available columns and expressions. **NOTE**: Only reference `Column Name` in your SQL, not `Column Expression`."
+        "このセクションは、使用可能なカラムと式をチェックするのに便利です。**注意**： SQLで参照するのは `Column Expression`ではなく, `Column Name` を参照ください。"
     )
     show_expr_for_ref(message_index)
     st.markdown("")
@@ -136,7 +136,7 @@ def edit_verified_query(
         sql, table_names=[t.name for t in st.session_state.semantic_model.tables]
     )
     st.markdown(
-        "You can edit the SQL below. Make sure to use the `Column Name` column in the **Cheat sheet** above for tables/columns available."
+        "以下のSQLを編集してください。利用可能なテーブル/カラムについては、上記の**CheetSheet**の`カラム名`カラムを必ず使用してください。"
     )
 
     with st.container(border=False):
@@ -186,12 +186,12 @@ def edit_verified_query(
             elif st.session_state.get("successful_sql", False):
                 # Moved outside the `if run:` block to ensure it's always evaluated
                 mark_as_onboarding = st.checkbox(
-                    "Mark as onboarding question",
+                    "オンボードの質問としてマーク",
                     key=f"edit_onboarding_idx_{message_index}",
                     help="Mark this question as an onboarding verified query.",
                 )
                 save = st.button(
-                    "Save as verified query",
+                    "検証済クエリとして保存",
                     use_container_width=True,
                     disabled=not st.session_state.get("successful_sql", False),
                 )
@@ -223,7 +223,7 @@ def add_verified_query(
     )
     st.session_state.semantic_model.verified_queries.append(verified_query)
     st.success(
-        "Verified Query Added! You can go back to validate your YAML again and upload; or keep adding more verified queries."
+        "検証済クエリが追加されました！YAML を再度検証してアップロードできます; もしくは検証済みのクエリを追加し続けることもできます。"
     )
     st.rerun()
 
@@ -320,7 +320,7 @@ def chat_and_edit_vqr(_conn: SnowflakeConnection) -> None:
 
         st.session_state.ctx_table_col_expr_dict = ctx_table_col_expr_dict
 
-    FIRST_MESSAGE = "Welcome! 😊 In this app, you can iteratively edit the semantic model YAML on the left side, and test it out in a chat setting here on the right side. How can I help you today?"
+    FIRST_MESSAGE = "ようこそ！😊 このアプリでは、左側でセマンティックモデルのYAMLを繰り返し編集し、右側のチャット環境でテストすることができます。何かご質問はありますか？"
 
     if "messages" not in st.session_state or len(st.session_state.messages) == 0:
         st.session_state.messages = [
