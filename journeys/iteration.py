@@ -244,7 +244,7 @@ def display_content(
             # If API rejects to answer directly and provided disambiguate suggestions, we'll return text with <SUGGESTION> as prefix.
             if "<SUGGESTION>" in item["text"]:
                 suggestion_response = json.loads(item["text"][12:])[0]
-                st.markdown(suggestion_response["explanation"])
+                st.markdown(Translate(suggestion_response["explanation"],"en","ja"))
                 with st.expander("Suggestions", expanded=True):
                     for suggestion_index, suggestion in enumerate(
                         suggestion_response["suggestions"]
@@ -254,7 +254,7 @@ def display_content(
                         ):
                             st.session_state.active_suggestion = suggestion
             else:
-                st.markdown(item["text"])
+                st.markdown(Translate(item["text"],"en","ja"))
         elif item["type"] == "suggestions":
             with st.expander("Suggestions", expanded=True):
                 for suggestion_index, suggestion in enumerate(item["suggestions"]):
@@ -271,13 +271,13 @@ def display_content(
                 st.dataframe(df, hide_index=True)
 
                 mark_as_onboarding = st.checkbox(
-                    "Mark as onboarding question",
+                    "オンボード質問としてマーク",
                     key=f"onboarding_idx_{message_index}",
                     help="Mark this question as an onboarding verified query.",
                 )
                 left, right = st.columns(2)
                 if right.button(
-                    "Save as verified query",
+                    "検証済クエリとして保存",
                     key=f"save_idx_{message_index}",
                     use_container_width=True,
                 ):
@@ -295,7 +295,7 @@ def display_content(
                     )
 
                 if left.button(
-                    "Edit",
+                    "編集",
                     key=f"edits_idx_{message_index}",
                     use_container_width=True,
                 ):
@@ -486,7 +486,7 @@ def yaml_editor(yaml_str: str) -> None:
             height=600,
         )
     st.session_state.working_yml = content
-    status_container_title = "**Edit**"
+    status_container_title = "**編集**"
     status_container = st.empty()
 
     def validate_and_update_session_state() -> None:
@@ -556,7 +556,7 @@ def yaml_editor(yaml_str: str) -> None:
             "Join Editor",
             use_container_width=True,
         ):
-            with st.spinner("Validating your model..."):
+            with st.spinner("モデルを検証しています..."):
                 validate_and_update_session_state()
             st.session_state["join_dialog_open"] = True
 
@@ -572,13 +572,13 @@ def yaml_editor(yaml_str: str) -> None:
         update_container(status_container, "editing", prefix=status_container_title)
 
 
-@st.experimental_dialog("Welcome to the Iteration app! 💬", width="large")
+@st.experimental_dialog("アプリ「ITERATION（反復）」へようこそ！💬", width="large")
 def set_up_requirements() -> None:
     """
     Collects existing YAML location from the user so that we can download it.
     """
     st.markdown(
-        "Fill in the Snowflake stage details to download your existing YAML file."
+        "Snowflakeステージの情報を入力して、既存のYAMLファイルをダウンロードします。"
     )
 
     stage_selector_container()
@@ -598,15 +598,15 @@ def set_up_requirements() -> None:
             st.error("Insufficient permissions to read from the selected stage.")
             st.stop()
 
-    file_name = st.selectbox("File name", options=available_files, index=None)
+    file_name = st.selectbox("ファイル名", options=available_files, index=None)
 
     experimental_features = st.checkbox(
-        "Enable joins (optional)",
-        help="Checking this box will enable you to add/edit join paths in your semantic model. If enabling this setting, please ensure that you have the proper parameters set on your Snowflake account. Reach out to your account team for access.",
+        "結合を許可(オプショナル)",
+        help="このボックスにチェックを入れると、セマンティックモデル内の結合パスを追加/編集できるようになります。この設定を有効にする場合は、Snowflakeアカウントに適切なパラメータが設定されていることを確認してください。アクセス方法については、アカウントチームにお問い合わせください。",
     )
 
     if st.button(
-        "Submit",
+        "送信",
         disabled=not st.session_state["selected_iteration_database"]
         or not st.session_state["selected_iteration_schema"]
         or not st.session_state["selected_iteration_stage"]
@@ -630,37 +630,37 @@ def chat_settings_dialog() -> None:
     """
 
     debug = st.toggle(
-        "Debug mode",
+        "デバッグモード",
         value=st.session_state.chat_debug,
-        help="Enable debug mode to see additional information (e.g. request ID).",
+        help="デバッグモードを有効にして追加情報を確認する (e.g. request ID).",
     )
 
     multiturn = st.toggle(
-        "Multiturn",
+        "マルチターン",
         value=st.session_state.multiturn,
-        help="Enable multiturn mode to allow the chat to remember context. Note that your account must have the correct parameters enabled to use this feature.",
+        help="マルチターンモードを有効にして、チャットがコンテキストを記憶できるようにします。この機能を使用するには、アカウントで正しいパラメータが有効になっている必要があります。",
     )
 
-    if st.button("Save"):
+    if st.button("保存"):
         st.session_state.chat_debug = debug
         st.session_state.multiturn = multiturn
         st.rerun()
 
 
-VALIDATE_HELP = """Save and validate changes to the active semantic model in this app. This is
-useful so you can then play with it in the chat panel on the right side."""
+VALIDATE_HELP = """このアプリでアクティブなセマンティックモデルへの変更を保存し、検証します。
+これは役に立つので、右側にあるチャットパネルで操作することができます。"""
 
 DOWNLOAD_HELP = (
-    """Download the currently loaded semantic model to your local machine."""
+    """現在ロードされているセマンティックモデルをローカルマシンにダウンロードします。"""
 )
 
-UPLOAD_HELP = """Upload the YAML to the Snowflake stage. You want to do that whenever
-you think your semantic model is doing great and should be pushed to prod! Note that
-the semantic model must be validated to be uploaded."""
+UPLOAD_HELP = """YAMLをSnowflakeステージにアップロードする。セマンティックモデルがうまくいっていて、
+prodにプッシュするべきだと思うときはいつでもアップロードします！
+セマンティックモデルをアップロードするには検証が必要であることに注意してください。."""
 
-PARTNER_SEMANTIC_HELP = """Uploaded semantic files from a partner tool?
-Use this feature to integrate partner semantic specs into Cortex Analyst's spec.
-Note that the Cortex Analyst semantic model must be validated before integrating partner semantics."""
+PARTNER_SEMANTIC_HELP = """パートナーツールからセマンティックファイルをアップロードしましたか？
+この機能を使用して、パートナーのセマンティックスペックをCortex Analystのスペックに統合します。
+パートナーのセマンティクスを統合する前に、Cortex Analystのセマンティックモデルを検証する必要があることに注意してください。"""
 
 
 def show() -> None:
@@ -679,7 +679,7 @@ def show() -> None:
             st.session_state["app_mode"] = st.selectbox(
                 label="App Mode",
                 label_visibility="collapsed",
-                options=["Chat", "Evaluation", "Preview YAML"],
+                options=["チャット", "評価", "YAMLプレビュー"],
             )
         if "yaml" not in st.session_state:
             # Only proceed to download the YAML from stage if we don't have one from the builder flow.
@@ -708,13 +708,13 @@ def show() -> None:
 
         with chat_container:
             app_mode = st.session_state["app_mode"]
-            if app_mode == "Preview YAML":
+            if app_mode == "YAMLプレビュー":
                 st.code(
                     st.session_state.working_yml, language="yaml", line_numbers=True
                 )
-            elif app_mode == "Evaluation":
+            elif app_mode == "評価":
                 evaluation_mode_show()
-            elif app_mode == "Chat":
+            elif app_mode == "チャット":
                 if st.button("Settings"):
                     chat_settings_dialog()
                 # We still initialize an empty connector and pass it down in order to propagate the connector auth token.
