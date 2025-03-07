@@ -55,15 +55,15 @@ RESULTS_TABLE_SCHEMA = {
 }
 
 LLM_JUDGE_PROMPT_TEMPLATE = """\
-[INST] Your task is to determine whether the two given dataframes are
-equivalent semantically in the context of a question. You should attempt to
-answer the given question by using the data in each dataframe. If the two
-answers are equivalent, those two dataframes are considered equivalent.
-Otherwise, they are not equivalent. Please also provide your reasoning.
-If they are equivalent, output "REASON: <reason>. ANSWER: true". If they are
-not equivalent, output "REASON: <reason>. ANSWER: false".
+[INST] あなたの作業は、与えられた2つのデータフレームが質問の文脈で意味的に同じかどうかを判断することです。
+が意味的に等価かどうかを判断することです。
+それぞれのデータフレームのデータを使って、与えられた質問に答えてみてください。
+もし2つの答えが同じであれば、2つのデータフレームは同じであるとみなされます。
+そうでなければ、それらは同じではありません。理由も記入してください。
+両者が同じなら、"REASON: <reason>. ANSWER: true "を出力する。
+等価でない場合は、"REASON: <reason>. ANSWER: false "を出力する。".
 
-### QUESTION: {input_question}
+### 質問: {input_question}
 
 * DATAFRAME 1:
 {frame1_str}
@@ -71,7 +71,7 @@ not equivalent, output "REASON: <reason>. ANSWER: false".
 * DATAFRAME 2:
 {frame2_str}
 
-Are the two dataframes equivalent?
+この2つのデータフレームは同じものですか？
 OUTPUT:
 [/INST] """
 
@@ -83,12 +83,12 @@ def visualize_eval_results(frame: pd.DataFrame) -> None:
     results_placeholder = st.session_state.get("eval_results_placeholder")
     with results_placeholder.container():
         st.markdown(
-            f"###### Results: {n_correct} out of {n_questions} questions correct with accuracy {accuracy:.2f}%"
+            f"###### Results: {n_questions} 問中 {n_correct} 問が正解。 {accuracy:.2f}%"
         )
         for row_id, row in frame.iterrows():
             match_emoji = "✅" if row["CORRECT"] else "❌"
             with st.expander(f"Row ID: {row_id} {match_emoji}"):
-                st.write(f"Input Query: {row['QUERY']}")
+                st.write(f"入力クエリ: {row['QUERY']}")
                 st.write(row["ANALYST_TEXT"].replace("\n", " "))
 
                 col1, col2 = st.columns(2)
@@ -130,7 +130,7 @@ def visualize_eval_results(frame: pd.DataFrame) -> None:
                     else:
                         st.write(row["GOLD_RESULT"])
 
-                st.write(f"**Explanation**: {row['EXPLANATION']}")
+                st.write(f"**説明**: {row['EXPLANATION']}")
 
 
 def _llm_judge(frame: pd.DataFrame, max_frame_size=200) -> pd.DataFrame:
@@ -407,7 +407,7 @@ def send_analyst_requests() -> None:
     analyst_results = []
 
     for i, (row_id, row) in enumerate(eval_table_frame.iterrows(), start=1):
-        status_text.text(f"Sending request {i}/{total_requests} to Analyst...")
+        status_text.text(f"Analystにリクエスト{i}/{total_requests}を送信中...")
         messages = [
             {"role": "user", "content": [{"type": "text", "text": row["QUERY"]}]}
         ]
@@ -433,7 +433,7 @@ def send_analyst_requests() -> None:
 
     elapsed_time = time.time() - start_time
     status_text.text(
-        f"All analyst requests received ✅ (Time taken: {elapsed_time:.2f} seconds)"
+        f"全ての分析リクエストを受信 ✅ (Time taken: {elapsed_time:.2f} seconds)"
     )
 
     analyst_results_frame = pd.DataFrame(analyst_results).set_index("ID")
@@ -442,8 +442,8 @@ def send_analyst_requests() -> None:
 
 @st.experimental_dialog("Evaluation Tables", width="large")
 def evaluation_data_dialog() -> None:
-    st.markdown("Please select an evaluation table.")
-    st.markdown("The evaluation table should have the following schema:")
+    st.markdown("評価テーブルを選択してください")
+    st.markdown("評価テーブルのスキーマは以下の通り：")
     eval_table_schema_explained = pd.DataFrame(
         [
             ["ID", "VARCHAR", "Unique identifier for each row"],
@@ -616,14 +616,14 @@ def clear_evaluation_data() -> None:
 
 def evaluation_mode_show() -> None:
 
-    if st.button("Select Evaluation Tables", on_click=clear_evaluation_selection):
+    if st.button("評価テーブルを選択", on_click=clear_evaluation_selection):
         evaluation_data_dialog()
 
     st.write(
-        "Welcome!🧪 In the evaluation mode you can evaluate your semantic model using pairs of golden queries/questions and their expected SQL statements. These pairs should be captured in an **Evaluation Table**. Accuracy metrics will be shown and the results will be stored in an **Evaluation Results Table**."
+        "ようこそ！🧪 評価モードでは、あなたのセマンティックモデルを評価することができます。これらのペアは**評価テーブル**に格納されます。精度指標が表示され、結果は**評価結果テーブル**に格納されます。"
     )
     st.text_input(
-        "Evaluation Run Name",
+        "評価実行名",
         key="selected_eval_run_name",
         value=st.session_state.get("selected_eval_run_name", ""),
     )
@@ -641,9 +641,9 @@ def evaluation_mode_show() -> None:
         ],
         columns=["Summary Statistic", "Value"],
     )
-    st.markdown("#### Evaluation Data Summary")
+    st.markdown("#### 評価データ概要")
     st.dataframe(summary_stats, hide_index=True)
-    if st.button("Run Evaluation"):
+    if st.button("評価スタート"):
         run_evaluation()
 
     if "total_eval_frame" in st.session_state:
@@ -663,9 +663,9 @@ def evaluation_mode_show() -> None:
         )
         if model_changed_test:
             st.warning("Model has changed since last evaluation run.")
-            st.markdown("#### Previous Evaluation Run Summary")
+            st.markdown("#### 前回の評価実行概要")
         else:
-            st.markdown("#### Current Evaluation Run Summary")
+            st.markdown("#### 今回の評価実行概要")
         st.dataframe(evolution_run_summary, hide_index=True)
         st.session_state["eval_results_placeholder"] = st.empty()
         visualize_eval_results(st.session_state["total_eval_frame"])
@@ -684,11 +684,11 @@ def run_evaluation() -> None:
     placeholder = st.empty()
 
     if not model_changed_test and "total_eval_frame" in st.session_state:
-        placeholder.write("Model has not changed since last evaluation run.")
+        placeholder.write("モデルが前回の評価実行から変更されていません")
         return
 
     if not st.session_state.validated or model_changed_test:
-        placeholder.write("Validating model...")
+        placeholder.write("モデルを検証..")
         try:
             # try loading the yaml
             _ = yaml.safe_load(st.session_state["working_yml"])
