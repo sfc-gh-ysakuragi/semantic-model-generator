@@ -71,7 +71,7 @@ def process_message(_conn: SnowflakeConnection, prompt: str) -> None:
     with st.chat_message("user"):
         st.markdown(prompt)
     with st.chat_message("assistant"):
-        with st.spinner("Generating response..."):
+        with st.spinner("回答を作成中..."):
             # Depending on whether multiturn is enabled, we either send just the user message or the entire chat history.
             request_messages = (
                 st.session_state.messages[1:]  # Skip the welcome message
@@ -250,7 +250,7 @@ def display_content(
                         suggestion_response["suggestions"]
                     ):
                         if st.button(
-                            suggestion, key=f"{message_index}_{suggestion_index}"
+                            Translate(suggestion,"en","ja"), key=f"{message_index}_{suggestion_index}"
                         ):
                             st.session_state.active_suggestion = suggestion
             else:
@@ -258,7 +258,7 @@ def display_content(
         elif item["type"] == "suggestions":
             with st.expander("Suggestions", expanded=True):
                 for suggestion_index, suggestion in enumerate(item["suggestions"]):
-                    if st.button(suggestion, key=f"{message_index}_{suggestion_index}"):
+                    if st.button(Translate(suggestion,"en","ja"), key=f"{message_index}_{suggestion_index}"):
                         st.session_state.active_suggestion = suggestion
         elif item["type"] == "sql":
             with st.container(height=500, border=False):
@@ -351,9 +351,9 @@ def chat_and_edit_vqr(_conn: SnowflakeConnection) -> None:
                 )
 
     chat_placeholder = (
-        "What is your question?"
+        "質問を入力してください"
         if st.session_state["validated"]
-        else "Please validate your semantic model before chatting."
+        else "質問を入力する前に, セマンティックモデルを有効化してください"
     )
     if user_input := st.chat_input(
         chat_placeholder, disabled=not st.session_state["validated"]
@@ -372,17 +372,17 @@ def upload_dialog(content: str) -> None:
     def upload_handler(file_name: str) -> None:
         if not st.session_state.validated and changed_from_last_validated_model():
             with st.spinner(
-                "Your semantic model has changed since last validation. Re-validating before uploading..."
+                "あなたのセマンティックモデルは前回の検証以降に変更されました。アップロードする前に再度検証してください。"
             ):
                 validate_and_upload_tmp_yaml(conn=get_snowflake_connection())
 
         st.session_state.semantic_model = yaml_to_semantic_model(content)
         with st.spinner(
-            f"Uploading @{st.session_state.snowflake_stage.stage_name}/{file_name}.yaml..."
+            f"@{st.session_state.snowflake_stage.stage_name}/{file_name}.yamlをアップロード中..."
         ):
             upload_yaml(file_name)
         st.success(
-            f"Uploaded @{st.session_state.snowflake_stage.stage_name}/{file_name}.yaml!"
+            f"@{st.session_state.snowflake_stage.stage_name}/{file_name}.yamlのアップロードが完了しました!"
         )
         st.session_state.last_saved_yaml = content
         time.sleep(1.5)
@@ -392,29 +392,29 @@ def upload_dialog(content: str) -> None:
         # When opening the iteration app directly, we collect stage information already when downloading the YAML.
         # We only need to ask for the new file name in this case.
         with st.form("upload_form_name_only"):
-            st.markdown("This will upload your YAML to the following Snowflake stage.")
+            st.markdown("YAMLを次のSnowflakeステージにアップロードします")
             st.write(st.session_state.snowflake_stage.to_dict())
             new_name = st.text_input(
                 key="upload_yaml_final_name",
-                label="Enter the file name to upload (omit .yaml suffix):",
+                label="アップロードするファイル名を入力 (omit .yaml suffix):",
             )
 
-            if st.form_submit_button("Submit Upload"):
+            if st.form_submit_button("アップロード"):
                 upload_handler(new_name)
     else:
         # If coming from the builder flow, we need to ask the user for the exact stage path to upload to.
-        st.markdown("Please enter the destination of your YAML file.")
+        st.markdown("YAMLファイルの保存先を入力してください")
         stage_selector_container()
-        new_name = st.text_input("File name (omit .yaml suffix)", value="")
+        new_name = st.text_input("ファイル名 (omit .yaml suffix)", value="")
 
-        if st.button("Submit Upload"):
+        if st.button("アップロード"):
             if (
                 not st.session_state["selected_iteration_database"]
                 or not st.session_state["selected_iteration_schema"]
                 or not st.session_state["selected_iteration_stage"]
                 or not new_name
             ):
-                st.error("Please fill in all fields.")
+                st.error("全ての入力欄を埋めてください")
                 return
 
             st.session_state["snowflake_stage"] = SnowflakeStage(
@@ -441,11 +441,11 @@ def update_container(
     container.empty()
 
     if content == "success":
-        content = "  ·  :green[✅  Model up-to-date and validated]"
+        content = "  ·  :green[✅  モデルの更新と検証]"
     elif content == "editing":
-        content = "  ·  :gray[✏️  Editing...]"
+        content = "  ·  :gray[✏️  編集中...]"
     elif content == "failed":
-        content = "  ·  :red[❌  Validation failed. Please fix the errors]"
+        content = "  ·  :red[❌  有効化失敗しました. エラーを修正してください]"
 
     if prefix:
         content = prefix + content
