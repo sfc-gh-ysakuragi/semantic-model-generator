@@ -397,7 +397,7 @@ def upload_dialog(content: str) -> None:
             st.write(st.session_state.snowflake_stage.to_dict())
             new_name = st.text_input(
                 key="upload_yaml_final_name",
-                label="アップロードするファイル名を入力 (omit .yaml suffix):",
+                label="アップロードするファイル名を入力 (.yamlは記載不要):",
             )
 
             if st.form_submit_button("アップロード"):
@@ -406,7 +406,7 @@ def upload_dialog(content: str) -> None:
         # If coming from the builder flow, we need to ask the user for the exact stage path to upload to.
         st.markdown("YAMLファイルの保存先を入力してください")
         stage_selector_container()
-        new_name = st.text_input("ファイル名 (omit .yaml suffix)", value="")
+        new_name = st.text_input("ファイル名 (.yamlは記載不要)", value="")
 
         if st.button("アップロード"):
             if (
