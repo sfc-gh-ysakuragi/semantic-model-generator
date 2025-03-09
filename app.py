@@ -1,6 +1,7 @@
 import streamlit as st
 from snowflake.connector import DatabaseError
 from snowflake.connector.connection import SnowflakeConnection
+from snowflake.cortex import Translate
 
 # set_page_config must be run as the first Streamlit command on the page, before any other streamlit imports.
 st.set_page_config(layout="wide", page_icon="💬", page_title="Semantic Model Generator")
