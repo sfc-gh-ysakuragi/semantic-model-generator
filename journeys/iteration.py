@@ -224,7 +224,7 @@ def add_verified_query(
     )
     st.session_state.semantic_model.verified_queries.append(verified_query)
     st.success(
-        "検証済クエリが追加されました！YAML を再度検証してアップロードできます; もしくは検証済みのクエリを追加し続けることもできます。"
+        "検証済クエリが追加されました！YAML を再度有効化してアップロードできます; もしくは検証済みのクエリを追加し続けることもできます。"
     )
     st.rerun()
 
@@ -373,7 +373,7 @@ def upload_dialog(content: str) -> None:
     def upload_handler(file_name: str) -> None:
         if not st.session_state.validated and changed_from_last_validated_model():
             with st.spinner(
-                "あなたのセマンティックモデルは前回の検証以降に変更されました。アップロードする前に再度有効化してください。"
+                "あなたのセマンティックモデルは前回の有効化以降に変更されました。アップロードする前に再度有効化してください。"
             ):
                 validate_and_upload_tmp_yaml(conn=get_snowflake_connection())
 
@@ -507,7 +507,7 @@ def yaml_editor(yaml_str: str) -> None:
             exception_as_dialog(e)
 
     button_row = row(5)
-    if button_row.button("検証", use_container_width=True, help=VALIDATE_HELP):
+    if button_row.button("有効化", use_container_width=True, help=VALIDATE_HELP):
         # Validate new content
         validate_and_update_session_state()
 
