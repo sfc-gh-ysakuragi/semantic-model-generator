@@ -217,7 +217,7 @@ def add_verified_query(
     verified_query = semantic_model_pb2.VerifiedQuery(
         name=question,
         question=question,
-        sql=question,
+        sql=sql,
         verified_by=st.session_state["user_name"],
         verified_at=int(time.time()),
         use_as_onboarding_question=is_onboarding_question,
@@ -239,6 +239,7 @@ def display_content(
     message_index = message_index or len(st.session_state.messages)
     question = ""
     for item in content:
+        st.write(item["type"])
         if item["type"] == "text":
             if question == "" and "__" in item["text"]:
                 question = item["text"].split("__")[1]
@@ -274,7 +275,7 @@ def display_content(
                 mark_as_onboarding = st.checkbox(
                     "オンボード質問としてマーク",
                     key=f"onboarding_idx_{message_index}",
-                    help="Mark this question as an onboarding verified query.",
+                    help="この質問をオンボーディング確認済みクエリとしてマークする。",
                 )
                 left, right = st.columns(2)
                 if right.button(
