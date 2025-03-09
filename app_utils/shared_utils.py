@@ -522,7 +522,7 @@ def edit_dimension(table_name: str, dim: semantic_model_pb2.Dimension) -> None:
     Renders a dialog box to edit an existing dimension.
     """
     key_prefix = f"{table_name}-{dim.name}"
-    dim.name = st.text_input("名前", dim.name, key=f"{key_prefix}-edit-dim-name")
+    dim.name = st.text_input("name", dim.name, key=f"{key_prefix}-edit-dim-name")
     dim.expr = st.text_input(
         "SQL表現", dim.expr, key=f"{key_prefix}-edit-dim-expr"
     )
@@ -572,7 +572,7 @@ def add_dimension(table: semantic_model_pb2.Table) -> None:
     Renders a dialog box to add a new dimension.
     """
     dim = Dimension()
-    dim.name = st.text_input("名前", key=f"{table.name}-add-dim-name")
+    dim.name = st.text_input("name", key=f"{table.name}-add-dim-name")
     dim.expr = st.text_input("SQL表現", key=f"{table.name}-add-dim-expr")
     dim.description = st.text_area(
         "説明", key=f"{table.name}-add-dim-description"
@@ -612,7 +612,7 @@ def edit_measure(table_name: str, measure: semantic_model_pb2.Measure) -> None:
     """
     key_prefix = f"{table_name}-{measure.name}"
     measure.name = st.text_input(
-        "名前", measure.name, key=f"{key_prefix}-edit-measure-name"
+        "name", measure.name, key=f"{key_prefix}-edit-measure-name"
     )
     measure.expr = st.text_input(
         "SQL表現", measure.expr, key=f"{key_prefix}-edit-measure-expr"
@@ -685,7 +685,7 @@ def add_measure(table: semantic_model_pb2.Table) -> None:
     """
     with st.form(key="add-measure"):
         measure = semantic_model_pb2.Measure()
-        measure.name = st.text_input("名前", key=f"{table.name}-add-measure-name")
+        measure.name = st.text_input("name", key=f"{table.name}-add-measure-name")
         measure.expr = st.text_input(
             "SQL表現", key=f"{table.name}-add-measure-expr"
         )
@@ -746,7 +746,7 @@ def edit_time_dimension(
     Renders a dialog box to edit a time dimension.
     """
     key_prefix = f"{table_name}-{tdim.name}"
-    tdim.name = st.text_input("名前", tdim.name, key=f"{key_prefix}-edit-tdim-name")
+    tdim.name = st.text_input("name", tdim.name, key=f"{key_prefix}-edit-tdim-name")
     tdim.expr = st.text_input(
         "SQL表現", tdim.expr, key=f"{key_prefix}-edit-tdim-expr"
     )
@@ -789,7 +789,7 @@ def add_time_dimension(table: semantic_model_pb2.Table) -> None:
     Renders a dialog box to add a new time dimension.
     """
     tdim = semantic_model_pb2.TimeDimension()
-    tdim.name = st.text_input("名前", key=f"{table.name}-add-tdim-name")
+    tdim.name = st.text_input("name", key=f"{table.name}-add-tdim-name")
     tdim.expr = st.text_input("SQL表現", key=f"{table.name}-add-tdim-expr")
     tdim.description = st.text_area(
         "説明", key=f"{table.name}-add-tdim-description"
@@ -896,7 +896,7 @@ def display_table(table_name: str) -> None:
             table.synonyms.append(row["Synonyms"])
 
     st.write("#### ディメンジョン")
-    header = ["名前", "式", "データ型"]
+    header = ["name", "式", "データ型"]
     header_cols = st.columns(len(header) + 1)
     for i, h in enumerate(header):
         header_cols[i].write(f"###### {h}")
@@ -1037,7 +1037,7 @@ def display_semantic_model() -> None:
     semantic_model = st.session_state.semantic_model
     with st.form(border=False, key="create"):
         name = st.text_input(
-            "名前",
+            "name",
             semantic_model.name,
             placeholder="My semantic model",
         )
