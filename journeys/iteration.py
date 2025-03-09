@@ -116,7 +116,7 @@ def show_expr_for_ref(message_index: int) -> None:
         st.table(col_df.set_index(col_df.columns[1]))
 
 
-@st.experimental_dialog("Edit", width="large")
+@st.experimental_dialog("編集", width="large")
 def edit_verified_query(
     conn: SnowflakeConnection, sql: str, question: str, message_index: int
 ) -> None:
@@ -368,7 +368,7 @@ def chat_and_edit_vqr(_conn: SnowflakeConnection) -> None:
         st.session_state.active_suggestion = None
 
 
-@st.experimental_dialog("Upload", width="small")
+@st.experimental_dialog("アップロード", width="small")
 def upload_dialog(content: str) -> None:
     def upload_handler(file_name: str) -> None:
         if not st.session_state.validated and changed_from_last_validated_model():
