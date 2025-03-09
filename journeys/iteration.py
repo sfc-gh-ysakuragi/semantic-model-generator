@@ -213,10 +213,6 @@ def add_verified_query(
     question: str, sql: str, is_onboarding_question: bool = False
 ) -> None:
     """Save verified question and SQL into an in-memory list with additional details."""
-    # Verified queries follow the Snowflake definitions.
-    st.write(question)
-    st.write(sql)
-    st.write(is_onboarding_question)
     
     verified_query = semantic_model_pb2.VerifiedQuery(
         name=question,
@@ -243,15 +239,15 @@ def display_content(
     message_index = message_index or len(st.session_state.messages)
     question = ""
     for item in content:
-        st.write("*")
+        st.write("------")
         st.write(item["type"])
-        st.write("*")
         st.write(item["type"])
-        st.write("*")
+        st.write("------")
         
         if item["type"] == "text":
             if question == "" and ": " in item["text"]:
                 question = item["text"].split(": ")[1]
+                st.write("1: ")
                 st.write(question)
             # If API rejects to answer directly and provided disambiguate suggestions, we'll return text with <SUGGESTION> as prefix.
             if "<SUGGESTION>" in item["text"]:
@@ -266,6 +262,8 @@ def display_content(
                         ):
                             st.session_state.active_suggestion = suggestion
             else:
+                st.write("3: ")
+                st.write(question)
                 st.markdown(Translate(item["text"],"en","ja"))
         elif item["type"] == "suggestions":
             with st.expander("Suggestions", expanded=True):
