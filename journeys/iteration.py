@@ -623,7 +623,7 @@ def set_up_requirements() -> None:
         st.rerun()
 
 
-@st.experimental_dialog("Chat Settings", width="small")
+@st.experimental_dialog("チャット設定", width="small")
 def chat_settings_dialog() -> None:
     """
     Dialog that allows user to toggle on/off certain settings about the chat experience.
@@ -715,7 +715,7 @@ def show() -> None:
             elif app_mode == "評価":
                 evaluation_mode_show()
             elif app_mode == "チャット":
-                if st.button("Settings"):
+                if st.button("設定"):
                     chat_settings_dialog()
                 # We still initialize an empty connector and pass it down in order to propagate the connector auth token.
                 chat_and_edit_vqr(get_snowflake_connection())
