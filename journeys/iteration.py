@@ -250,8 +250,9 @@ def display_content(
         st.write("*")
         
         if item["type"] == "text":
-            if question == "" and "__" in item["text"]:
-                question = item["text"].split("__")[1]
+            if question == "" and ": " in item["text"]:
+                question = item["text"].split(": ")[1]
+                st.write(question)
             # If API rejects to answer directly and provided disambiguate suggestions, we'll return text with <SUGGESTION> as prefix.
             if "<SUGGESTION>" in item["text"]:
                 suggestion_response = json.loads(item["text"][12:])[0]
