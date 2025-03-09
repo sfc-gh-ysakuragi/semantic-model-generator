@@ -255,7 +255,7 @@ def display_content(
                         ):
                             st.session_state.active_suggestion = suggestion
             else:
-                st.markdown(item["text"])
+                st.markdown(Translate(item["text"],"en","ja")
         elif item["type"] == "suggestions":
             with st.expander("Suggestions", expanded=True):
                 for suggestion_index, suggestion in enumerate(item["suggestions"]):
@@ -373,7 +373,7 @@ def upload_dialog(content: str) -> None:
     def upload_handler(file_name: str) -> None:
         if not st.session_state.validated and changed_from_last_validated_model():
             with st.spinner(
-                "あなたのセマンティックモデルは前回の検証以降に変更されました。アップロードする前に再度検証してください。"
+                "あなたのセマンティックモデルは前回の検証以降に変更されました。アップロードする前に再度有効化してください。"
             ):
                 validate_and_upload_tmp_yaml(conn=get_snowflake_connection())
 
