@@ -364,7 +364,7 @@ def stage_selector_container() -> Optional[List[str]]:
             st.stop()
 
     files = st.selectbox(
-        "Stage name",
+        "ステージ名",
         options=available_stages,
         index=None,
         key="selected_iteration_stage",
@@ -450,7 +450,7 @@ class GeneratorAppScreen(str, Enum):
 
 
 def return_home_button() -> None:
-    if st.button("Return to Home"):
+    if st.button("ホームに戻る"):
         st.session_state["page"] = GeneratorAppScreen.ONBOARDING
         # Reset environment variables related to the semantic model, so that builder/iteration flows can start fresh.
         if "semantic_model" in st.session_state:
@@ -522,12 +522,12 @@ def edit_dimension(table_name: str, dim: semantic_model_pb2.Dimension) -> None:
     Renders a dialog box to edit an existing dimension.
     """
     key_prefix = f"{table_name}-{dim.name}"
-    dim.name = st.text_input("Name", dim.name, key=f"{key_prefix}-edit-dim-name")
+    dim.name = st.text_input("名前", dim.name, key=f"{key_prefix}-edit-dim-name")
     dim.expr = st.text_input(
-        "SQL Expression", dim.expr, key=f"{key_prefix}-edit-dim-expr"
+        "SQL表現", dim.expr, key=f"{key_prefix}-edit-dim-expr"
     )
     dim.description = st.text_area(
-        "Description", dim.description, key=f"{key_prefix}-edit-dim-description"
+        "説明", dim.description, key=f"{key_prefix}-edit-dim-description"
     )
     # Allow users to edit synonyms through a data_editor.
     synonyms_df = st.data_editor(
@@ -543,10 +543,10 @@ def edit_dimension(table_name: str, dim: semantic_model_pb2.Dimension) -> None:
 
     # TODO(nsehrawat): Change to a select box with a list of all data types.
     dim.data_type = st.text_input(
-        "Data type", dim.data_type, key=f"{key_prefix}-edit-dim-datatype"
+        "データ型", dim.data_type, key=f"{key_prefix}-edit-dim-datatype"
     )
     dim.unique = st.checkbox(
-        "Does it have unique values?",
+        "ユニークな値を持っているか?",
         value=dim.unique,
         key=f"{key_prefix}-edit-dim-unique",
     )
@@ -562,7 +562,7 @@ def edit_dimension(table_name: str, dim: semantic_model_pb2.Dimension) -> None:
         if row["Sample Values"]:
             dim.sample_values.append(row["Sample Values"])
 
-    if st.button("Save"):
+    if st.button("保存"):
         st.rerun()
 
 
@@ -572,10 +572,10 @@ def add_dimension(table: semantic_model_pb2.Table) -> None:
     Renders a dialog box to add a new dimension.
     """
     dim = Dimension()
-    dim.name = st.text_input("Name", key=f"{table.name}-add-dim-name")
-    dim.expr = st.text_input("SQL Expression", key=f"{table.name}-add-dim-expr")
+    dim.name = st.text_input("名前", key=f"{table.name}-add-dim-name")
+    dim.expr = st.text_input("SQL表現", key=f"{table.name}-add-dim-expr")
     dim.description = st.text_area(
-        "Description", key=f"{table.name}-add-dim-description"
+        "説明", key=f"{table.name}-add-dim-description"
     )
     synonyms_df = st.data_editor(
         pd.DataFrame(list(dim.synonyms), columns=["Synonyms"]),
@@ -588,7 +588,7 @@ def add_dimension(table: semantic_model_pb2.Table) -> None:
 
     dim.data_type = st.text_input("Data type", key=f"{table.name}-add-dim-datatype")
     dim.unique = st.checkbox(
-        "Does it have unique values?", key=f"{table.name}-add-dim-unique"
+        "ユニークな値を持っているか？", key=f"{table.name}-add-dim-unique"
     )
     sample_values_df = st.data_editor(
         pd.DataFrame(list(dim.sample_values), columns=["Sample Values"]),
@@ -612,13 +612,13 @@ def edit_measure(table_name: str, measure: semantic_model_pb2.Measure) -> None:
     """
     key_prefix = f"{table_name}-{measure.name}"
     measure.name = st.text_input(
-        "Name", measure.name, key=f"{key_prefix}-edit-measure-name"
+        "名前", measure.name, key=f"{key_prefix}-edit-measure-name"
     )
     measure.expr = st.text_input(
-        "SQL Expression", measure.expr, key=f"{key_prefix}-edit-measure-expr"
+        "SQL表現", measure.expr, key=f"{key_prefix}-edit-measure-expr"
     )
     measure.description = st.text_area(
-        "Description", measure.description, key=f"{key_prefix}-edit-measure-description"
+        "説明", measure.description, key=f"{key_prefix}-edit-measure-description"
     )
     synonyms_df = st.data_editor(
         pd.DataFrame(list(measure.synonyms), columns=["Synonyms"]),
@@ -631,7 +631,7 @@ def edit_measure(table_name: str, measure: semantic_model_pb2.Measure) -> None:
             measure.synonyms.append(row["Synonyms"])
 
     measure.data_type = st.text_input(
-        "Data type", measure.data_type, key=f"{key_prefix}-edit-measure-data-type"
+        "データ型", measure.data_type, key=f"{key_prefix}-edit-measure-data-type"
     )
 
     aggr_options = semantic_model_pb2.AggregationType.keys()
@@ -647,7 +647,7 @@ def edit_measure(table_name: str, measure: semantic_model_pb2.Measure) -> None:
     )
 
     default_aggregation = st.selectbox(
-        "Default Aggregation",
+        "デフォルトの集計",
         aggr_options,
         index=default_aggregation_idx,
         key=f"{key_prefix}-edit-measure-default-aggregation",
@@ -674,7 +674,7 @@ def edit_measure(table_name: str, measure: semantic_model_pb2.Measure) -> None:
         if row["Sample Values"]:
             measure.sample_values.append(row["Sample Values"])
 
-    if st.button("Save"):
+    if st.button("保存"):
         st.rerun()
 
 
@@ -685,12 +685,12 @@ def add_measure(table: semantic_model_pb2.Table) -> None:
     """
     with st.form(key="add-measure"):
         measure = semantic_model_pb2.Measure()
-        measure.name = st.text_input("Name", key=f"{table.name}-add-measure-name")
+        measure.name = st.text_input("名前", key=f"{table.name}-add-measure-name")
         measure.expr = st.text_input(
-            "SQL Expression", key=f"{table.name}-add-measure-expr"
+            "SQL表現", key=f"{table.name}-add-measure-expr"
         )
         measure.description = st.text_area(
-            "Description", key=f"{table.name}-add-measure-description"
+            "説明", key=f"{table.name}-add-measure-description"
         )
         synonyms_df = st.data_editor(
             pd.DataFrame(list(measure.synonyms), columns=["Synonyms"]),
@@ -703,13 +703,13 @@ def add_measure(table: semantic_model_pb2.Table) -> None:
                 measure.synonyms.append(row["Synonyms"])
 
         measure.data_type = st.text_input(
-            "Data type", key=f"{table.name}-add-measure-data-type"
+            "データ型", key=f"{table.name}-add-measure-data-type"
         )
         aggr_options = semantic_model_pb2.AggregationType.keys()
         # Replace the 'aggregation_type_unknown' string with an empty string for a better display of options.
         aggr_options[0] = ""
         default_aggregation = st.selectbox(
-            "Default Aggregation",
+            "デフォルトの集計",
             aggr_options,
             key=f"{table.name}-edit-measure-default-aggregation",
         )
@@ -746,12 +746,12 @@ def edit_time_dimension(
     Renders a dialog box to edit a time dimension.
     """
     key_prefix = f"{table_name}-{tdim.name}"
-    tdim.name = st.text_input("Name", tdim.name, key=f"{key_prefix}-edit-tdim-name")
+    tdim.name = st.text_input("名前", tdim.name, key=f"{key_prefix}-edit-tdim-name")
     tdim.expr = st.text_input(
-        "SQL Expression", tdim.expr, key=f"{key_prefix}-edit-tdim-expr"
+        "SQL表現", tdim.expr, key=f"{key_prefix}-edit-tdim-expr"
     )
     tdim.description = st.text_area(
-        "Description",
+        "説明",
         tdim.description,
         key=f"{key_prefix}-edit-tdim-description",
     )
@@ -766,7 +766,7 @@ def edit_time_dimension(
             tdim.synonyms.append(row["Synonyms"])
 
     tdim.data_type = st.text_input(
-        "Data type", tdim.data_type, key=f"{key_prefix}-edit-tdim-datatype"
+        "データ型", tdim.data_type, key=f"{key_prefix}-edit-tdim-datatype"
     )
     tdim.unique = st.checkbox("Does it have unique values?", value=tdim.unique)
     sample_values_df = st.data_editor(
@@ -779,7 +779,7 @@ def edit_time_dimension(
         if row["Sample Values"]:
             tdim.sample_values.append(row["Sample Values"])
 
-    if st.button("Save"):
+    if st.button("保存"):
         st.rerun()
 
 
@@ -789,10 +789,10 @@ def add_time_dimension(table: semantic_model_pb2.Table) -> None:
     Renders a dialog box to add a new time dimension.
     """
     tdim = semantic_model_pb2.TimeDimension()
-    tdim.name = st.text_input("Name", key=f"{table.name}-add-tdim-name")
-    tdim.expr = st.text_input("SQL Expression", key=f"{table.name}-add-tdim-expr")
+    tdim.name = st.text_input("名前", key=f"{table.name}-add-tdim-name")
+    tdim.expr = st.text_input("SQL表現", key=f"{table.name}-add-tdim-expr")
     tdim.description = st.text_area(
-        "Description", key=f"{table.name}-add-tdim-description"
+        "説明", key=f"{table.name}-add-tdim-description"
     )
     synonyms_df = st.data_editor(
         pd.DataFrame(list(tdim.synonyms), columns=["Synonyms"]),
@@ -805,9 +805,9 @@ def add_time_dimension(table: semantic_model_pb2.Table) -> None:
             tdim.synonyms.append(row["Synonyms"])
 
     # TODO(nsehrawat): Change the set of allowed data types here.
-    tdim.data_type = st.text_input("Data type", key=f"{table.name}-add-tdim-data-types")
+    tdim.data_type = st.text_input("データ型", key=f"{table.name}-add-tdim-data-types")
     tdim.unique = st.checkbox(
-        "Does it have unique values?", key=f"{table.name}-add-tdim-unique"
+        "ユニークな値を持っているか?", key=f"{table.name}-add-tdim-unique"
     )
     sample_values_df = st.data_editor(
         pd.DataFrame(list(tdim.sample_values), columns=["Sample Values"]),
@@ -819,7 +819,7 @@ def add_time_dimension(table: semantic_model_pb2.Table) -> None:
         if row["Sample Values"]:
             tdim.sample_values.append(row["Sample Values"])
 
-    if st.button("Add", key=f"{table.name}-add-tdim-add"):
+    if st.button("追加", key=f"{table.name}-add-tdim-add"):
         table.time_dimensions.append(tdim)
         st.rerun()
 
@@ -860,28 +860,28 @@ def display_table(table_name: str) -> None:
             table: semantic_model_pb2.Table = t
             break
 
-    st.write("#### Table metadata")
-    table.name = st.text_input("Table Name", table.name)
+    st.write("#### テーブルメタデータ")
+    table.name = st.text_input("テーブル名", table.name)
     fqn_columns = st.columns(3)
     with fqn_columns[0]:
         table.base_table.database = st.text_input(
-            "Physical Database",
+            "物理データベース名",
             table.base_table.database,
             key=f"{table_name}-base_database",
         )
     with fqn_columns[1]:
         table.base_table.schema = st.text_input(
-            "Physical Schema",
+            "物理スキーマ名",
             table.base_table.schema,
             key=f"{table_name}-base_schema",
         )
     with fqn_columns[2]:
         table.base_table.table = st.text_input(
-            "Physical Table", table.base_table.table, key=f"{table_name}-base_table"
+            "物理テーブル名", table.base_table.table, key=f"{table_name}-base_table"
         )
 
     table.description = st.text_area(
-        "Description", table.description, key=f"{table_name}-description"
+        "説明", table.description, key=f"{table_name}-description"
     )
 
     synonyms_df = st.data_editor(
@@ -895,8 +895,8 @@ def display_table(table_name: str) -> None:
         if row["Synonyms"]:
             table.synonyms.append(row["Synonyms"])
 
-    st.write("#### Dimensions")
-    header = ["Name", "Expression", "Data Type"]
+    st.write("#### ディメンジョン")
+    header = ["名前", "式", "データ型"]
     header_cols = st.columns(len(header) + 1)
     for i, h in enumerate(header):
         header_cols[i].write(f"###### {h}")
@@ -909,12 +909,12 @@ def display_table(table_name: str) -> None:
         with cols[-1]:
             subcols = st.columns(2)
             if subcols[0].button(
-                "Edit",
+                "編集",
                 key=f"{table_name}-edit-dimension-{idx}",
             ):
                 edit_dimension(table_name, dim)
             subcols[1].button(
-                "Delete",
+                "削除",
                 key=f"{table_name}-delete-dimension-{idx}",
                 on_click=delete_dimension,
                 args=(
@@ -923,10 +923,10 @@ def display_table(table_name: str) -> None:
                 ),
             )
 
-    if st.button("Add Dimension", key=f"{table_name}-add-dimension"):
+    if st.button("ディメンジョン追加", key=f"{table_name}-add-dimension"):
         add_dimension(table)
 
-    st.write("#### Measures")
+    st.write("#### 数値情報")
     header_cols = st.columns(len(header) + 1)
     for i, h in enumerate(header):
         header_cols[i].write(f"###### {h}")
@@ -938,10 +938,10 @@ def display_table(table_name: str) -> None:
         cols[2].write(measure.data_type)
         with cols[-1]:
             subcols = st.columns(2)
-            if subcols[0].button("Edit", key=f"{table_name}-edit-measure-{idx}"):
+            if subcols[0].button("編集", key=f"{table_name}-edit-measure-{idx}"):
                 edit_measure(table_name, measure)
             subcols[1].button(
-                "Delete",
+                "削除",
                 key=f"{table_name}-delete-measure-{idx}",
                 on_click=delete_measure,
                 args=(
@@ -950,10 +950,10 @@ def display_table(table_name: str) -> None:
                 ),
             )
 
-    if st.button("Add Measure", key=f"{table_name}-add-measure"):
+    if st.button("数値情報の追加", key=f"{table_name}-add-measure"):
         add_measure(table)
 
-    st.write("#### Time Dimensions")
+    st.write("#### 時間情報のディメンジョン")
     header_cols = st.columns(len(header) + 1)
     for i, h in enumerate(header):
         header_cols[i].write(f"###### {h}")
@@ -965,10 +965,10 @@ def display_table(table_name: str) -> None:
         cols[2].write(tdim.data_type)
         with cols[-1]:
             subcols = st.columns(2)
-            if subcols[0].button("Edit", key=f"{table_name}-edit-tdim-{idx}"):
+            if subcols[0].button("編集", key=f"{table_name}-edit-tdim-{idx}"):
                 edit_time_dimension(table_name, tdim)
             subcols[1].button(
-                "Delete",
+                "削除",
                 key=f"{table_name}-delete-tdim-{idx}",
                 on_click=delete_time_dimension,
                 args=(
@@ -977,7 +977,7 @@ def display_table(table_name: str) -> None:
                 ),
             )
 
-    if st.button("Add Time Dimension", key=f"{table_name}-add-tdim"):
+    if st.button("時間情報のディメンジョン追加", key=f"{table_name}-add-tdim"):
         add_time_dimension(table)
 
 
@@ -987,14 +987,14 @@ def add_new_table() -> None:
     Renders a dialog box to add a new logical table.
     """
     table = Table()
-    table.name = st.text_input("Table Name")
+    table.name = st.text_input("テーブル名")
     for t in st.session_state.semantic_model.tables:
         if t.name == table.name:
             st.error(f"Table called '{table.name}' already exists")
 
-    table.base_table.database = st.text_input("Physical Database")
-    table.base_table.schema = st.text_input("Physical Schema")
-    table.base_table.table = st.text_input("Physical Table")
+    table.base_table.database = st.text_input("物理データベース名")
+    table.base_table.schema = st.text_input("物理スキーマ名")
+    table.base_table.table = st.text_input("物理テーブル名")
     st.caption(":gray[Synonyms (hover the table to add new rows!)]")
     synonyms_df = st.data_editor(
         pd.DataFrame(columns=["Synonyms"]),
@@ -1005,8 +1005,8 @@ def add_new_table() -> None:
     for _, row in synonyms_df.iterrows():
         if row["Synonyms"]:
             table.synonyms.append(row["Synonyms"])
-    table.description = st.text_area("Description", key="add-new-table-description")
-    if st.button("Add"):
+    table.description = st.text_area("説明", key="add-new-table-description")
+    if st.button("追加"):
         with st.spinner(text="Fetching table details from database ..."):
             try:
                 semantic_model = raw_schema_to_semantic_context(
@@ -1037,30 +1037,30 @@ def display_semantic_model() -> None:
     semantic_model = st.session_state.semantic_model
     with st.form(border=False, key="create"):
         name = st.text_input(
-            "Name",
+            "名前",
             semantic_model.name,
             placeholder="My semantic model",
         )
 
         description = st.text_area(
-            "Description",
+            "説明",
             semantic_model.description,
             key="display-semantic-model-description",
-            placeholder="The model describes the data and metrics available for Foocorp",
+            placeholder="このモデルには、Foocorpで利用可能なデータと指標が記載されている。",
         )
 
         left, right = st.columns((1, 4))
-        if left.form_submit_button("Create", use_container_width=True):
+        if left.form_submit_button("作成", use_container_width=True):
             st.session_state.semantic_model.name = name
             st.session_state.semantic_model.description = description
             st.session_state["next_is_unlocked"] = True
-            right.success("Successfully created model. Updating...")
+            right.success("モデルの作成に成功しました。更新中...")
             time.sleep(1.5)
             st.rerun()
 
 
 def edit_semantic_model() -> None:
-    st.write("#### Tables")
+    st.write("#### テーブル")
     for t in st.session_state.semantic_model.tables:
         with st.expander(t.name):
             display_table(t.name)
@@ -1073,7 +1073,7 @@ def import_yaml() -> None:
     Renders a page to import an existing yaml file.
     """
     uploaded_file = st.file_uploader(
-        "Choose a semantic model YAML file",
+        "セマンティックモデルYAMLを選択してください",
         type=[".yaml", ".yml"],
         accept_multiple_files=False,
     )
@@ -1091,7 +1091,7 @@ def import_yaml() -> None:
             return
 
         st.session_state["semantic_model"] = pb
-        st.success(f"Successfully imported **{pb.name}**!")
+        st.success(f"インポート成功しました **{pb.name}**!")
         st.session_state["next_is_unlocked"] = True
         if "yaml_just_imported" not in st.session_state:
             st.session_state["yaml_just_imported"] = True
@@ -1143,7 +1143,7 @@ def validate_and_upload_tmp_yaml(conn: SnowflakeConnection) -> None:
     except Exception as e:
         st.warning(f"Invalid YAML: {e} please fix!")
 
-    st.success("Successfully validated your model!")
+    st.success("モデルの検証が成功しました")
     st.session_state["next_is_unlocked"] = True
 
 
@@ -1301,8 +1301,8 @@ def input_semantic_file_name() -> str:
     """
 
     model_name = st.text_input(
-        "Semantic Model Name (no .yaml suffix)",
-        help="The name of the semantic model you are creating. This is separate from the filename, which we will set later.",
+        "セマンティックモデル名 (no .yaml suffix)",
+        help="作成するセマンティックモデルの名前。これは後で設定するファイル名とは別のものです。",
     )
     return model_name
 
@@ -1315,10 +1315,10 @@ def input_sample_value_num() -> int:
     """
 
     sample_values: int = st.selectbox(  # type: ignore
-        "Maximum number of sample values per column",
+        "1列あたりのサンプル値の最大数",
         list(range(1, 40)),
         index=2,
-        help="Specifies the maximum number of distinct sample values we fetch for each column. We suggest keeping this number as low as possible to reduce latency.",
+        help="各カラムで取得するサンプル値の最大数を指定します。待ち時間を短縮するために、この数をできるだけ少なくしておくことをお勧めします。",
     )
     return sample_values
 
@@ -1340,11 +1340,11 @@ def run_generate_model_str_from_snowflake(
     """
 
     if not model_name:
-        raise ValueError("Please provide a name for your semantic model.")
+        raise ValueError("セマンティックモデル名を記入してください。")
     elif not base_tables:
-        raise ValueError("Please select at least one table to proceed.")
+        raise ValueError("少なくとも1つのテーブルを選択してください。")
     else:
-        with st.spinner("Generating model. This may take a minute or two..."):
+        with st.spinner("モデルを生成しています。数分お待ちください...。"):
             yaml_str = generate_model_str_from_snowflake(
                 base_tables=base_tables,
                 semantic_model_name=model_name,
