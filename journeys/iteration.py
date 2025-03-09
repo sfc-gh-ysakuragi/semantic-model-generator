@@ -241,7 +241,7 @@ def display_content(
     for item in content:        
         if item["type"] == "text":
             if question == "" and ":" in item["text"]:
-                question = Translate(item["text"].split(":")[1].replace("\n",""),"en","jp")
+                question = Translate(item["text"].split(":")[1].replace("\n",""),"en","ja")
             # If API rejects to answer directly and provided disambiguate suggestions, we'll return text with <SUGGESTION> as prefix.
             if "<SUGGESTION>" in item["text"]:
                 suggestion_response = json.loads(item["text"][12:])[0]
