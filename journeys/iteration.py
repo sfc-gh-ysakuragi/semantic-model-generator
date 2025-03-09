@@ -451,7 +451,7 @@ def update_container(
     container.empty()
 
     if content == "success":
-        content = "  ·  :green[✅  モデルの更新と検証]"
+        content = "  ·  :green[✅  モデルの更新と有効化]"
     elif content == "editing":
         content = "  ·  :gray[✏️  編集中...]"
     elif content == "failed":
