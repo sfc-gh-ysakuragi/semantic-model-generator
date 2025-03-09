@@ -238,16 +238,10 @@ def display_content(
     """Displays a content item for a message. For generated SQL, allow user to add to verified queries directly or edit then add."""
     message_index = message_index or len(st.session_state.messages)
     question = ""
-    for item in content:
-        st.write("------")
-        st.write(item["type"])
-        st.write(item["type"])
-        st.write("------")
-        
+    for item in content:        
         if item["type"] == "text":
             if question == "" and ":" in item["text"]:
-                question = item["text"].split(":")[1].replace("\n","")
-                st.write(question)
+                question = Translate(item["text"].split(":")[1].replace("\n",""),"en","jp")
             # If API rejects to answer directly and provided disambiguate suggestions, we'll return text with <SUGGESTION> as prefix.
             if "<SUGGESTION>" in item["text"]:
                 suggestion_response = json.loads(item["text"][12:])[0]
