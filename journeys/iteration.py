@@ -245,9 +245,9 @@ def display_content(
     for item in content:
         st.write("*")
         st.write(item["type"])
-        st.write(item["*"])
+        st.write("*")
         st.write(item["type"])
-        st.write(item["*"])
+        st.write("*")
         
         if item["type"] == "text":
             if question == "" and "__" in item["text"]:
