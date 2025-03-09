@@ -55,7 +55,7 @@ def relationship_builder(
             default_left_table = 0
             default_right_table = 0
         relationship.left_table = st.selectbox(
-            "Left Table",
+            "左テーブル",
             options=[table.name for table in st.session_state.semantic_model.tables],
             index=default_left_table,
             key=f"left_table_{key}",
@@ -142,7 +142,7 @@ def relationship_builder(
                 key=f"right_col_{key}_{col_idx}",
             )
 
-            if st.button("Delete join key", key=f"delete_join_key_{key}_{col_idx}"):
+            if st.button("結合キーを削除", key=f"delete_join_key_{key}_{col_idx}"):
                 relationship.relationship_columns.pop(col_idx)
                 st.rerun()
 
@@ -150,7 +150,7 @@ def relationship_builder(
 
         join_editor_row = row(2, vertical_align="center")
         if join_editor_row.button(
-            "Add new join key",
+            "新しい結合キーを追加",
             key=f"add_join_keys_{key}",
             use_container_width=True,
             type="primary",
@@ -164,7 +164,7 @@ def relationship_builder(
             st.rerun()
 
         if join_editor_row.button(
-            "🗑️ Delete join path",
+            "🗑️ 結合パスを削除",
             key=f"delete_join_path_{key}",
             use_container_width=True,
         ):
@@ -172,7 +172,7 @@ def relationship_builder(
             st.rerun()
 
 
-@st.experimental_dialog("Join Builder", width="large")
+@st.experimental_dialog("結合ビルダー", width="large")
 def joins_dialog() -> None:
     if "builder_joins" not in st.session_state:
         # Making a copy of the original relationships list so we can modify freely without affecting the original.
