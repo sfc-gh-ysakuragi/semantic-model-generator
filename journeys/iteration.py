@@ -10,6 +10,7 @@ from streamlit import config
 from streamlit.delta_generator import DeltaGenerator
 from streamlit_extras.row import row
 from streamlit_extras.stylable_container import stylable_container
+from snowflake.cortex import Translate
 
 from app_utils.chat import send_message
 from app_utils.shared_utils import (
