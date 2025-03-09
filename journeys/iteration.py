@@ -264,11 +264,11 @@ def display_content(
             else:
                 st.write("3: ")
                 st.write(question)
-                st.markdown(Translate(item["text"],"en","ja"))
+                st.markdown(item["text"])
         elif item["type"] == "suggestions":
             with st.expander("Suggestions", expanded=True):
                 for suggestion_index, suggestion in enumerate(item["suggestions"]):
-                    if st.button(Translate(suggestion,"en","ja"), key=f"{message_index}_{suggestion_index}"):
+                    if st.button(suggestion, key=f"{message_index}_{suggestion_index}"):
                         st.session_state.active_suggestion = suggestion
         elif item["type"] == "sql":
             with st.container(height=500, border=False):
