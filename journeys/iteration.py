@@ -255,7 +255,7 @@ def display_content(
                         ):
                             st.session_state.active_suggestion = suggestion
             else:
-                st.markdown(Translate(item["text"],"en","ja")
+                st.markdown(Translate(item["text"],"en","ja"))
         elif item["type"] == "suggestions":
             with st.expander("Suggestions", expanded=True):
                 for suggestion_index, suggestion in enumerate(item["suggestions"]):
