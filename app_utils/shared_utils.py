@@ -335,7 +335,7 @@ def stage_selector_container() -> Optional[List[str]]:
 
     # First, retrieve all databases that the user has access to.
     stage_database = st.selectbox(
-        "Stage database",
+        "ステージデータベース",
         options=get_available_databases(),
         index=None,
         key="selected_iteration_database",
@@ -349,7 +349,7 @@ def stage_selector_container() -> Optional[List[str]]:
             st.stop()
 
     stage_schema = st.selectbox(
-        "Stage schema",
+        "ステージスキーマ",
         options=available_schemas,
         index=None,
         key="selected_iteration_schema",
