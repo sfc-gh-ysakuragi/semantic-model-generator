@@ -246,8 +246,7 @@ def display_content(
         
         if item["type"] == "text":
             if question == "" and ":" in item["text"]:
-                question = item["text"].split(":")[1]
-                st.write("1: ")
+                question = item["text"].split(":")[1].replace("\n","")
                 st.write(question)
             # If API rejects to answer directly and provided disambiguate suggestions, we'll return text with <SUGGESTION> as prefix.
             if "<SUGGESTION>" in item["text"]:
@@ -262,8 +261,6 @@ def display_content(
                         ):
                             st.session_state.active_suggestion = suggestion
             else:
-                st.write("3: ")
-                st.write(question)
                 st.markdown(item["text"])
         elif item["type"] == "suggestions":
             with st.expander("Suggestions", expanded=True):
