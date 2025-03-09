@@ -68,7 +68,7 @@ def update_tables() -> None:
     st.session_state["selected_tables"] = valid_selected_tables
 
 
-@st.experimental_dialog("Selecting your tables", width="large")
+@st.experimental_dialog("対象テーブルを選択", width="large")
 def table_selector_dialog() -> None:
     st.write(
         "セマンティックモデルの構築を開始するには、以下のフィールドに入力してください。"
