@@ -71,7 +71,7 @@ def update_tables() -> None:
 @st.experimental_dialog("Selecting your tables", width="large")
 def table_selector_dialog() -> None:
     st.write(
-        "Please fill out the following fields to start building your semantic model."
+        "セマンティックモデルの構築を開始するには、以下のフィールドに入力してください。"
     )
     model_name = input_semantic_file_name()
     sample_values = input_sample_value_num()
@@ -86,7 +86,7 @@ def table_selector_dialog() -> None:
     if "selected_tables" not in st.session_state:
         st.session_state["selected_tables"] = []
 
-    with st.spinner("Loading databases..."):
+    with st.spinner("データベースを読み込み中..."):
         available_databases = get_available_databases()
 
     st.multiselect(
