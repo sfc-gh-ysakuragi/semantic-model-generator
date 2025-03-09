@@ -600,7 +600,7 @@ def add_dimension(table: semantic_model_pb2.Table) -> None:
         if row["Sample Values"]:
             dim.sample_values.append(row["Sample Values"])
 
-    if st.button("Add"):
+    if st.button("追加"):
         table.dimensions.append(dim)
         st.rerun()
 
@@ -1064,7 +1064,7 @@ def edit_semantic_model() -> None:
     for t in st.session_state.semantic_model.tables:
         with st.expander(t.name):
             display_table(t.name)
-    if st.button("Add Table"):
+    if st.button("テーブル追加"):
         add_new_table()
 
 
