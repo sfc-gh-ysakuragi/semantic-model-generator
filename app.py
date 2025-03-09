@@ -62,8 +62,8 @@ if __name__ == "__main__":
         st.markdown(
             """
                 <div style="text-align: center;">
-                    <h1>Welcome to the Snowflake Semantic Model Generator! ❄️</h1>
-                    <p>Let's get started. What would you like to do?</p>
+                    <h1>Snowflake Semantic Model Generatorへようこそ! ❄️</h1>
+                    <p>メニューを選択してください。</p>
                 </div>
             """,
             unsafe_allow_html=True,
@@ -74,21 +74,21 @@ if __name__ == "__main__":
         _, center, _ = st.columns([1, 2, 1])
         with center:
             if st.button(
-                "**🛠 Create a new semantic model**",
+                "**🛠 セマンティックモデルを新規作成**",
                 use_container_width=True,
                 type="primary",
             ):
                 builder.show()
             st.markdown("")
             if st.button(
-                "**✏️ Edit an existing semantic model**",
+                "**✏️ 既存のセマンティックモデルを編集**",
                 use_container_width=True,
                 type="primary",
             ):
                 iteration.show()
             st.markdown("")
             if st.button(
-                "**:package: Start with partner semantic model**",
+                "**:package: パートナーセマンティックモデルで始める**",
                 use_container_width=True,
                 type="primary",
             ):
