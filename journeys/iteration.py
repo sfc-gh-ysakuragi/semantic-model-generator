@@ -240,19 +240,20 @@ def display_content(
     question = ""
     for item in content:
         st.write(item["type"])
+        st.write(item["text"])
         if item["type"] == "text":
             if question == "" and "__" in item["text"]:
                 question = item["text"].split("__")[1]
             # If API rejects to answer directly and provided disambiguate suggestions, we'll return text with <SUGGESTION> as prefix.
             if "<SUGGESTION>" in item["text"]:
                 suggestion_response = json.loads(item["text"][12:])[0]
-                st.markdown(Translate(suggestion_response["explanation"],"en","ja"))
+                st.markdown(suggestion_response["explanation"])
                 with st.expander("Suggestions", expanded=True):
                     for suggestion_index, suggestion in enumerate(
                         suggestion_response["suggestions"]
                     ):
                         if st.button(
-                            Translate(suggestion,"en","ja"), key=f"{message_index}_{suggestion_index}"
+                            suggestion, key=f"{message_index}_{suggestion_index}"
                         ):
                             st.session_state.active_suggestion = suggestion
             else:
