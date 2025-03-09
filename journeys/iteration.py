@@ -217,7 +217,7 @@ def add_verified_query(
     verified_query = semantic_model_pb2.VerifiedQuery(
         name=question,
         question=question,
-        sql=sql,
+        sql=question,
         verified_by=st.session_state["user_name"],
         verified_at=int(time.time()),
         use_as_onboarding_question=is_onboarding_question,
