@@ -243,6 +243,12 @@ def display_content(
     message_index = message_index or len(st.session_state.messages)
     question = ""
     for item in content:
+        st.write("*")
+        st.write(item["type"])
+        st.write(item["*"])
+        st.write(item["type"])
+        st.write(item["*"])
+        
         if item["type"] == "text":
             if question == "" and "__" in item["text"]:
                 question = item["text"].split("__")[1]
