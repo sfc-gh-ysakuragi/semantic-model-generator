@@ -504,7 +504,7 @@ def evaluation_data_dialog() -> None:
 
     st.divider()
 
-    if st.button("Use Tables"):
+    if st.button("テーブルを使用"):
         st.session_state["selected_results_eval_table"] = st.session_state.get(
             "selected_results_eval_new_table"
         ) or st.session_state.get("selected_results_eval_old_table")
