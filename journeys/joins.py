@@ -43,6 +43,7 @@ def relationship_builder(
         relationship.name = st.text_input(
             "Name", value=relationship.name, key=f"name_{key}"
         )
+        st.write(relationship.name)
         # Logic to preselect the tables in the dropdown based on what's in the semantic model.
         try:
             default_left_table = [
