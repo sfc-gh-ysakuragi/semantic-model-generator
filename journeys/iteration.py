@@ -245,8 +245,8 @@ def display_content(
         st.write("------")
         
         if item["type"] == "text":
-            if question == "" and ": " in item["text"]:
-                question = item["text"].split(": ")[1]
+            if question == "" and ":" in item["text"]:
+                question = item["text"].split(":")[1]
                 st.write("1: ")
                 st.write(question)
             # If API rejects to answer directly and provided disambiguate suggestions, we'll return text with <SUGGESTION> as prefix.
