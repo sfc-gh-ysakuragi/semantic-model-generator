@@ -159,7 +159,7 @@ def edit_verified_query(
                     label_visibility="collapsed",
                     value=sql_without_cte,
                 )
-            run = st.button("Run", use_container_width=True)
+            run = st.button("実行", use_container_width=True)
 
             if run:
                 try:
@@ -506,7 +506,7 @@ def yaml_editor(yaml_str: str) -> None:
             exception_as_dialog(e)
 
     button_row = row(5)
-    if button_row.button("Validate", use_container_width=True, help=VALIDATE_HELP):
+    if button_row.button("検証", use_container_width=True, help=VALIDATE_HELP):
         # Validate new content
         validate_and_update_session_state()
 
@@ -520,7 +520,7 @@ def yaml_editor(yaml_str: str) -> None:
 
     if content:
         button_row.download_button(
-            label="Download",
+            label="ダウンロード",
             data=content,
             file_name="semantic_model.yaml",
             mime="text/yaml",
@@ -529,7 +529,7 @@ def yaml_editor(yaml_str: str) -> None:
         )
 
     if button_row.button(
-        "Upload",
+        "アップロード",
         use_container_width=True,
         help=UPLOAD_HELP,
     ):
@@ -553,7 +553,7 @@ def yaml_editor(yaml_str: str) -> None:
             st.session_state["join_dialog_open"] = False
 
         if button_row.button(
-            "Join Editor",
+            "Join編集",
             use_container_width=True,
         ):
             with st.spinner("モデルを検証しています..."):
