@@ -8,6 +8,7 @@ from loguru import logger
 from snowflake.connector import DictCursor
 from snowflake.connector.connection import SnowflakeConnection
 from snowflake.connector.errors import ProgrammingError
+from snowflake.cortex import Translate
 
 from semantic_model_generator.data_processing.data_types import Column, Table
 from semantic_model_generator.snowflake_utils import env_vars
@@ -96,7 +97,7 @@ def _get_table_comment(
                 .replace("'", "\\'")
             )
             comment_prompt = f"Here is a table with below DDL: {tbl_ddl} \nPlease provide a business description for the table. Only return the description without any other text."
-            complete_sql = f"select SNOWFLAKE.CORTEX.TRANSLATE(SNOWFLAKE.CORTEX.COMPLETE('{_autogen_model}', '{comment_prompt}'), \"en\",\"ja\")"
+            complete_sql = f"select SNOWFLAKE.CORTEX.TRANSLATE(SNOWFLAKE.CORTEX.COMPLETE('{_autogen_model}', '{comment_prompt}'), 'en','ja')"
             cmt = conn.cursor().execute(complete_sql).fetchall()[0][0]  # type: ignore[union-attr]
             return str(cmt + AUTOGEN_TOKEN)
         except Exception as e:
