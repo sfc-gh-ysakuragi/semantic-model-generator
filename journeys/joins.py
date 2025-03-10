@@ -41,7 +41,7 @@ def relationship_builder(
         expanded=True,
     ):
         relationship.name = st.text_input(
-            "Name", value=relationship.name, key=f"name_{key}"
+            "名前", value=relationship.name, key=f"name_{key}"
         )
         st.write(relationship.name)
         # Logic to preselect the tables in the dropdown based on what's in the semantic model.
@@ -188,6 +188,7 @@ def joins_dialog() -> None:
     if st.button("新しい結合パスを追加", use_container_width=True):
         st.session_state.builder_joins.append(
             semantic_model_pb2.Relationship(
+                name="",
                 left_table="",
                 right_table="",
                 join_type=semantic_model_pb2.JoinType.inner,
@@ -233,7 +234,7 @@ def joins_dialog() -> None:
                 )
             )
 
-            with st.spinner("Fetching primary keys..."):
+            with st.spinner("主キーを取得中..."):
                 if not left_table_object.primary_key.columns:
                     primary_keys = get_table_primary_keys(
                         get_snowflake_connection(),
